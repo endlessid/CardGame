@@ -1,0 +1,1 @@
+﻿{"stage01":{"name":"断背山","stars":"0"},"stage02":{"name":"女装山脉","stars":"-1"},"stage03":{"name":"断头谷","stars":"-1"},"stage04":{"name":"不要扶她","stars":"-1"},"stage05":{"name":"干了这碗恒河水","stars":"-1"},"stage06":{"name":"来世还做印度人","stars":"-1"}}

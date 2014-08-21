@@ -3,7 +3,7 @@ using System.Collections;
 
 [System.Serializable]
 public class CardData{
-	public int mpNum = 10;
+	public int mpNum = 30;
 	public int cardDMG = 10;
 	public bool isSelect =false;
 	public int hpNum;
@@ -13,7 +13,7 @@ public class CardData{
 public class AbstractCard : MonoBehaviour {
 
 	public CardData myCardData;
-	public int rollOut = 70;
+	public int rollOut = 1;
 	public float rollTime = 0.5f;
 
 	public AbstractBar myBar;
@@ -54,8 +54,8 @@ public class AbstractCard : MonoBehaviour {
 			myCard.isSelect = false;
 		}
 		myBar.BarUpdate(myBar.myBarData);
-
+		}
 	}
 
 
-}
+

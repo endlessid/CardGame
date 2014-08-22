@@ -7,7 +7,7 @@ public class MusicController : MonoBehaviour {
 	public AudioSource mapBGM;
 	public AudioSource stageBGM;
 
-//	public List<AudioClip> bgmList;
+	public List<AudioClip> bgmList;
 
 
 	// Use this for initialization

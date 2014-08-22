@@ -23,7 +23,7 @@ public class BattleController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(debug){
-			BackToMap();
+			GenerateCard(5);
 			debug = false;
 		}
 
@@ -46,14 +46,14 @@ public class BattleController : MonoBehaviour {
 		UIPlayAnimation[] animationList =map.GetComponents<UIPlayAnimation>();
 		foreach(UIPlayAnimation child in animationList){
 			child.Play(true,false);
-
 		}
-		Debug.Log("yeah");
 	}
 
-	public void DeleteCards(){
-
-	}	
+//	public IEnumerator SpellCardAttack(){
+//		bool attackReady = false;
+//		AbstractCard[] cards = gameObject.GetComponentsInChildren<AbstractCard>();
+//		for(int i = cards.Length )
+//	}
 	}
 
 

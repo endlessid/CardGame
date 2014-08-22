@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class Actor : MonoBehaviour {
-	public int hp; 
+	public int hp;
+	public int damage;
 
 	// Use this for initialization
 	void Start () {
@@ -14,6 +15,7 @@ public class Actor : MonoBehaviour {
 	
 	}
 	public virtual void Attack(){
+
 	
 	
 	}

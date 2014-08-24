@@ -4,21 +4,19 @@ using System.Collections;
 [System.Serializable]
 public class CardData{
 	public int mpNum = 30;
-	public int cardDMG = 10;
 	public bool isSelect =false;
-	public int hpNum;
 }
 
 
-public class AbstractCard : MonoBehaviour {
+public class AbstractCard : Actor {
+
 
 	public CardData myCardData;
 	public int rollOut = 1;
 	public float rollTime = 0.5f;
-	public Transform[] path;
-
-
+	public Transform[] wayPoints;
 	public AbstractBar myBar;
+	public iTween.EaseType easeType;
 	public bool IsSelect{
 		get{return myCardData.isSelect;}
 		set{myCardData.isSelect = value;}
@@ -28,8 +26,8 @@ public class AbstractCard : MonoBehaviour {
 		set{myCardData.mpNum = value;}
 	}
 	public int DMG{
-		get{return myCardData.cardDMG;}
-		set{myCardData.cardDMG = value;}
+		get{return damage;}
+		set{damage = value;}
 	}
 
 	public bool debug;
@@ -44,7 +42,8 @@ public class AbstractCard : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(debug){
-			CardMoveOut ();
+			GameObject go = GameObject.FindGameObjectWithTag("Enemy");
+			CardAttackMove (go.transform);
 			debug = false;
 		}
 
@@ -55,6 +54,7 @@ public class AbstractCard : MonoBehaviour {
 
 	//check if card can be select,change mp,roll out & roll back
 	public void CardRollOut(){
+
 		if(IsSelect == false && myBar.MPbar >= MP ){
 			myBar.MPbar -= MP;
 			iTween.MoveTo(gameObject,iTween.Hash("x",transform.localPosition.x,"y",rollOut,"islocal",true,"time",rollTime,"easetype","spring"));
@@ -69,20 +69,24 @@ public class AbstractCard : MonoBehaviour {
 		myBar.BarUpdate(myBar.myBarData);
 		}
 
-	//card attack enemy and return
-	public void CardMoveOut(){
-//		AbstractCard[] cards = gameObject.GetComponentsInChildren<AbstractCard>();
-		Hashtable cardAttack = new Hashtable();
-//		path[0] =; 
-//		path[1] = ;
-//		path[2] =;
-		cardAttack.Add ("x",3.6f);
-		cardAttack.Add ("y",7);
-		cardAttack.Add ("time",0.5f);
-		cardAttack.Add ("islocal",true);
-		cardAttack.Add ("easetype","spring");
-//		iTween.MoveFrom(gameObject,cardAttack);
+	//check card isselectd & card attack enemy and return
+	public void CardAttackMove(Transform target){
+		if (IsSelect == true) {
+						Hashtable arg = new Hashtable ();
+						wayPoints [0] = transform;
+						wayPoints [1] = target;
+						wayPoints [2] = transform;
+						arg.Add ("path", wayPoints);
+						arg.Add ("time", 0.7f);
+						arg.Add ("easetype", easeType);
+						iTween.MoveFrom (gameObject, arg);
+				}
 		  				
+		}
+
+	//
+	public void CardAttack(Actor target){
+		Attack (target);
 	}
 
 	}

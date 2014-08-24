@@ -14,12 +14,12 @@ public class Actor : MonoBehaviour {
 	void Update () {
 	
 	}
-	public virtual void Attack(){
-
-	
+	public virtual void Attack(Actor target){
+		target.UnderAttack (this);	
 	
 	}
-	public virtual void UnderAttack(Actor target){
-
+	public virtual void UnderAttack(Actor attcker){
+		Debug.Log (attcker.name);
+		hp -= attcker.damage;
 	}
 }

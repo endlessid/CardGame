@@ -6,6 +6,7 @@ public class BattleController : MonoBehaviour {
 	public GameObject cardPrefab;
 	public UIGrid cardDeck;
 	public AbstractBar abBar;
+	public Enemy myEnemy;
 
 	public Transform map;
 
@@ -29,6 +30,7 @@ public class BattleController : MonoBehaviour {
 
 
 	}
+	//add count cards into deck
 	public void GenerateCard(int count){
 		for(int i = 0;i < count ;i++){
 			GameObject newCard = NGUITools.AddChild(cardDeck.gameObject,cardPrefab);
@@ -41,6 +43,7 @@ public class BattleController : MonoBehaviour {
 		}
 	}
 
+	//back to map 
 	public void BackToMap(){
 
 		UIPlayAnimation[] animationList =map.GetComponents<UIPlayAnimation>();
@@ -48,6 +51,15 @@ public class BattleController : MonoBehaviour {
 			child.Play(true,false);
 		}
 	}
+
+	//
+	void OnTriggerEnter(Collider other){
+		Actor act = other.GetComponent<Actor> ();
+		myEnemy.EnemyUnderAttack (act);
+		Debug.Log("yeah");
+
+
+	} 
 
 //	public IEnumerator SpellCardAttack(){
 //		bool attackReady = false;

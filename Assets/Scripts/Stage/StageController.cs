@@ -6,9 +6,11 @@ using System.Collections.Generic;
 public class StageController : MonoBehaviour {
 
 
-//	public StageData mySatageData;
+
 	public AbstractStage[] stageArray;
-//	public bool show;
+	public delegate void GotoBattle();
+	public GotoBattle changPanel;
+
 
 
 	// Use this for initialization
@@ -19,10 +21,7 @@ public class StageController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-//		if (show) {
-//			ShowStage(mySatageData);
-//			show=false;
-//		}
+
 	}
 
 	public void UnlockStage(){
@@ -57,19 +56,4 @@ public class StageController : MonoBehaviour {
 			JsonStage.StarsCount(stageArray);
 			}			
 		}
-}
-
-
-	
-//	public void ShowStage(StageData[] mydata){
-//		int count = 0;
-//		for(int i = 0; i < 6; i++){
-//			stageArray[i].SetStageinfo(mydata[i]);
-//			if(mySatageData[i].starNum > 0){
-//				count += mySatageData[i].starNum;
-//			}
-//		}
-//		GameObject go = GameObject.FindGameObjectWithTag("stars");
-//		go.GetComponent<UILabel>().text = count.ToString();
-//	}
-//}
+}	

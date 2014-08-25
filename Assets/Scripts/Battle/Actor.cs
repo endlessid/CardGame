@@ -19,7 +19,6 @@ public class Actor : MonoBehaviour {
 	
 	}
 	public virtual void UnderAttack(Actor attcker){
-		Debug.Log (attcker.name);
 		hp -= attcker.damage;
 	}
 }

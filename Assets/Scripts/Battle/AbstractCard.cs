@@ -34,7 +34,7 @@ public class AbstractCard : Actor {
 
 	// Use this for initialization
 	void Start () {
-		myBar.BarUpdate(myBar.myBarData);
+		myBar.BarUpdate();
 
 	
 	}
@@ -43,7 +43,7 @@ public class AbstractCard : Actor {
 	void Update () {
 		if(debug){
 			GameObject go = GameObject.FindGameObjectWithTag("Enemy");
-			CardAttackMove (go.transform);
+			CardSuicide (go.transform);
 			debug = false;
 		}
 
@@ -66,7 +66,7 @@ public class AbstractCard : Actor {
 			iTween.MoveTo(gameObject,iTween.Hash("x",transform.localPosition.x,"y",0,"islocal",true,"time",rollTime,"easetype",""));
 			IsSelect = false;
 		}
-		myBar.BarUpdate(myBar.myBarData);
+		myBar.BarUpdate();
 		}
 
 	//check card isselectd & card attack enemy and return
@@ -84,9 +84,17 @@ public class AbstractCard : Actor {
 		  				
 		}
 
-	//
-	public void CardAttack(Actor target){
-		Attack (target);
+	public void CardSuicide(Transform target){
+		if (IsSelect == true) {
+			Hashtable arg = new Hashtable ();
+			wayPoints [0] = transform;
+			wayPoints [1] = target;
+			arg.Add ("path", wayPoints);
+			arg.Add ("time", 0.5f);
+			arg.Add ("easetype", easeType);
+			iTween.MoveFrom (gameObject, arg);
+		}
+
 	}
 
 	}

@@ -40,16 +40,16 @@ public class AbstractBar : MonoBehaviour {
 	}
 
 
-	public void BarUpdate(BarData myBar){
-		if(HPbar <101 && HPbar >0 ){
+	public void BarUpdate(){
+		if(HPbar <101 && HPbar >=0 ){
 			hpSprite.width = (int)HPbar*267/100;		
 		}
 
-		if ( MPbar < 101 && MPbar > 0){
+		if ( MPbar < 101 && MPbar >= 0){
 			mpSprite.width = (int)MPbar*267/100;
 		}
-		if ( BOSShp < 101 && BOSShp > 0){
-			bosshpSprite.width = (int)BOSShp*274/100;
+		if ( BOSShp < 101 && BOSShp >= 0){
+			bosshpSprite.width = (int)BOSShp*287/100;
 		}
 
 	}

@@ -38,7 +38,7 @@ public class Enemy : Actor {
 		if(EnemyHP <0){
 			EnemyHP = 0;
 		}
-		myBar.BarUpdate (myBar.myBarData);
+		myBar.BarUpdate ();
 	}
 
 }

@@ -32,7 +32,7 @@ public class JsonStage : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Load Stage Data From Txt
+	/// Load Stage Data From Txt accroding to stageID
 	/// </summary>
 	public void LoadStage(){
 

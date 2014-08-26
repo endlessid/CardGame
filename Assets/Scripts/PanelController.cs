@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PanelController : MonoBehaviour {
-	public UIPanel mapPanel;
+	public UIPanel stagePanel;
 	public UIPanel battlePanel;
 	public BattleController battleCtrl;
 	public StageController stageCtrl;
@@ -10,11 +10,11 @@ public class PanelController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		stageCtrl = GetComponent<StageController> ();
+		stageCtrl = GetComponent<StageController>();
+		stageCtrl.changPanel = changeToBattle;
 
-
-		battleCtrl = GetComponent < BattleController ();
-
+		battleCtrl = GetComponent<BattleController>();
+		battleCtrl.changePanel = changeToStage;
 	
 	}
 	
@@ -23,4 +23,22 @@ public class PanelController : MonoBehaviour {
 
 	
 	}
+	public void changeToBattle(){
+		TweenPosition stageTween = stagePanel.GetComponent<TweenPosition>();
+		stageTween.PlayForward ();
+		TweenPosition battleTween = battlePanel.GetComponent<TweenPosition>();
+		battleTween.PlayForward ();
+		battleCtrl.GenerateCard(5);
+
+	}
+	public void changeToStage(){
+		TweenPosition stageTween = stagePanel.GetComponent<TweenPosition>();
+		stageTween.PlayReverse();
+		TweenPosition battleTween = battlePanel.GetComponent<TweenPosition>();
+		battleTween.PlayReverse ();
+		battleCtrl.DestoryAllCards ();
+
+	}
+
+
 }

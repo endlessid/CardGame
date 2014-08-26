@@ -8,8 +8,8 @@ public class StageController : MonoBehaviour {
 
 
 	public AbstractStage[] stageArray;
-	public delegate void GotoBattle();
-	public GotoBattle changPanel;
+	public delegate void ChangeToBattle();
+	public ChangeToBattle changPanel;
 
 
 

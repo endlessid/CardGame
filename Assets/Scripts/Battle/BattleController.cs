@@ -7,7 +7,8 @@ public class BattleController : MonoBehaviour {
 	public UIGrid cardDeck;
 	public AbstractBar abBar;
 	public Enemy myEnemy;
-
+	public delegate void ChangeToStage();
+	public ChangeToStage changePanel;
 	public Transform map;
 
 //	public bool debug;

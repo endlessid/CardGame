@@ -43,7 +43,7 @@ public class AbstractCard : Actor {
 	void Update () {
 		if(debug){
 			GameObject go = GameObject.FindGameObjectWithTag("Enemy");
-			CardSuicide (go.transform);
+			CardAttackMove (go.transform);
 			debug = false;
 		}
 
@@ -57,13 +57,13 @@ public class AbstractCard : Actor {
 
 		if(IsSelect == false && myBar.MPbar >= MP ){
 			myBar.MPbar -= MP;
-			iTween.MoveTo(gameObject,iTween.Hash("x",transform.localPosition.x,"y",rollOut,"islocal",true,"time",rollTime,"easetype","spring"));
+			iTween.MoveTo(gameObject,iTween.Hash("x",transform.localPosition.x,"y",rollOut,"islocal",true,"time",rollTime,"easetype","linear"));
 			IsSelect = true;
 		}
 		else if(IsSelect == true && myBar.MPbar < 100)
 		{
 			myBar.MPbar += MP;
-			iTween.MoveTo(gameObject,iTween.Hash("x",transform.localPosition.x,"y",0,"islocal",true,"time",rollTime,"easetype","spring"));
+			iTween.MoveTo(gameObject,iTween.Hash("x",transform.localPosition.x,"y",0,"islocal",true,"time",rollTime,"easetype","linear"));
 			IsSelect = false;
 		}
 		myBar.BarUpdate();
@@ -77,25 +77,25 @@ public class AbstractCard : Actor {
 						wayPoints [1] = target;
 						wayPoints [2] = transform;
 						arg.Add ("path", wayPoints);
-						arg.Add ("time", 0.7f);
+						arg.Add ("time", 0.6f);
 						arg.Add ("easetype", easeType);
 						iTween.MoveFrom (gameObject, arg);
 				}
 		  				
 		}
 
-	public void CardSuicide(Transform target){
-		if (IsSelect == true) {
-			Hashtable arg = new Hashtable ();
-			wayPoints [0] = transform;
-			wayPoints [1] = target;
-			arg.Add ("path", wayPoints);
-			arg.Add ("time", 0.5f);
-			arg.Add ("easetype", easeType);
-			iTween.MoveFrom (gameObject, arg);
-		}
-
-	}
+//	public void CardSuicide(Transform target){
+//		if (IsSelect == true) {
+//			Hashtable arg = new Hashtable ();
+//			wayPoints [0] = transform;
+//			wayPoints [1] = target;
+//			arg.Add ("path", wayPoints);
+//			arg.Add ("time", 0.5f);
+//			arg.Add ("easetype", easeType);
+//			iTween.MoveFrom (gameObject, arg);
+//		}
+//
+//	}
 
 	}
 

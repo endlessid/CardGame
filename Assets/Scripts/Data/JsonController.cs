@@ -3,18 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class JsonStage : MonoBehaviour {
+public class JsonController : MonoBehaviour {
 	
 	Dictionary<string,object> stageDic;
 	public TextAsset stageTXT;
-	public AbstractStage[] theStage;
+	private AbstractStage[] theStage;
 	public bool save;
 	public bool load;
+
 	
 	
 	// Use this for initialization
 	void Start () {
+		GameObject level = GameObject.FindGameObjectWithTag("level");
+		theStage = level.GetComponentsInChildren<AbstractStage>();
 		stageDic = MiniJSON.Json.Deserialize(stageTXT.text) as Dictionary<string,object>;
+
 		LoadStage();
 	}	
 	// Update is called once per frame
@@ -26,7 +30,7 @@ public class JsonStage : MonoBehaviour {
 		if(load){
 			LoadData(theStage);
 			load = false;
-			StarsCount(theStage);
+			StageController.StarsCount();
 		}
 		
 	}
@@ -44,20 +48,10 @@ public class JsonStage : MonoBehaviour {
 			stagechild.UpdateStageName();
 			stagechild.UpdateStars(stagechild.myStageData.starNum);		
 			}		
-			StarsCount(theStage);
+			StageController.StarsCount();
 	}
-	/// <summary>
-	/// Sum num of stars
-	/// </summary>
-	public static void StarsCount(AbstractStage[] stages){
-		int sum = 0;
-		foreach(AbstractStage starchild in stages){
-			if(starchild.myStageData.starNum >0 )
-				sum += starchild.myStageData.starNum;				
-		}
-		GameObject go = GameObject.FindGameObjectWithTag("stars");
-		go.GetComponent<UILabel>().text =sum.ToString ();
-	}
+
+
 	/// <summary>
 	/// Saves the data.
 	/// </summary>

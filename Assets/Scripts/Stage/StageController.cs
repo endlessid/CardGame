@@ -17,6 +17,7 @@ public class StageController : MonoBehaviour {
 	void Start () {
 
 
+
 	}
 	
 	// Update is called once per frame
@@ -30,7 +31,7 @@ public class StageController : MonoBehaviour {
 				stageArray[i+1].myStageData.starNum =0;
 				stageArray[i+1].UpdateStars(stageArray[i+1].myStageData.starNum);
 			}
-			JsonStage.StarsCount(stageArray);
+			StarsCount();
 		}
 	}
 
@@ -40,11 +41,26 @@ public class StageController : MonoBehaviour {
 	public string GetStageId(){
 		foreach (AbstractStage idChild in stageArray) {
 			UIToggle to = idChild.GetComponent<UIToggle>();
-			if(to.value == true){
+			if(to.value){
 				return idChild.myStageData.stageID;
 			}
 		}
 		return null;
+	}
+
+	/// <summary>
+	/// Sum num of stars
+	/// </summary>
+	public static void StarsCount(){
+		int sum = 0;
+		GameObject level = GameObject.FindGameObjectWithTag("level");
+		AbstractStage[] stages = level.GetComponentsInChildren<AbstractStage>();
+		foreach(AbstractStage starchild in stages){
+			if(starchild.myStageData.starNum >0 )
+				sum += starchild.myStageData.starNum;				
+		}
+		GameObject go = GameObject.FindGameObjectWithTag("stars");
+		go.GetComponent<UILabel>().text =sum.ToString ();
 	}
 
 	public void AddStar(){
@@ -53,7 +69,7 @@ public class StageController : MonoBehaviour {
 					starchild.myStageData.starNum += 1;
 				starchild.UpdateStars(starchild.myStageData.starNum);
 			}
-			JsonStage.StarsCount(stageArray);
+			StarsCount();
 			}			
 		}
 }	

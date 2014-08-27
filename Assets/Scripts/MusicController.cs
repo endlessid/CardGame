@@ -21,10 +21,10 @@ public class MusicController : MonoBehaviour {
 	void Update () {
 	
 	}
-	public void PlayBGM(AudioClip bgm){
-		mapBGM.Stop();
-		stageBGM.clip = bgm;
-		stageBGM.Play();
+	public void PlayBGM(int count){
+//		mapBGM.Stop();
+//		stageBGM.clip = bgm;
+//		stageBGM.Play();
 
 	}
 }

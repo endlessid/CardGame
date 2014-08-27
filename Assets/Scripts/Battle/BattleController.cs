@@ -6,11 +6,13 @@ public class BattleController : MonoBehaviour {
 	public GameObject cardPrefab;
 	public UIGrid cardDeck;
 	public AbstractBar abBar;
-	public Enemy myEnemy;
+
 	public delegate void ChangeToStage();
 	public ChangeToStage changePanel;
-	public Transform map;
 
+	public Enemy myEnemy;
+	public Player myPlayer;
+	public StageController sc;
 //	public bool debug;
 //	public bool debug1;
 
@@ -25,14 +27,7 @@ public class BattleController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-//		if(debug){
-//			GenerateCard(5);
-//			debug = false;
-//		}
-//		if(debug1){
-//			DestoryAllCards();
-//			debug1 = false;
-//		}
+
 
 
 	}
@@ -59,29 +54,39 @@ public class BattleController : MonoBehaviour {
 
 	}
 
-	//back to map 
-	public void BackToMap(){
-
-		UIPlayAnimation[] animationList =map.GetComponents<UIPlayAnimation>();
-		foreach(UIPlayAnimation child in animationList){
-			child.Play(true,false);
-		}
+	public void attackEnemy(){
+		StartCoroutine("CreatureCardAttack");
 	}
 
-	//
-	void OnTriggerEnter(Collider other){
-		Actor act = other.GetComponent<Actor> ();
-		myEnemy.EnemyUnderAttack (act);
-		Debug.Log(other.name);
+	IEnumerator CreatureCardAttack(){	
+		AbstractCard[] cards = cardDeck.GetComponentsInChildren<AbstractCard>();
+		for(int i = cards.Length-1;i>=0;i--){
+			if(cards[i].IsSelect){
+				cards[i].CardAttackMove(myEnemy.transform);
+				yield return new WaitForSeconds(0.6f);
+		
+			}
+		}
+		cardDeck.Reposition ();
+		if(myEnemy.EnemyHP >0){		
+			abBar.HPbar -=myEnemy.EnemyDMG;
+			yield return new WaitForSeconds(1f);
+		}
+		else if(myEnemy.EnemyHP <=0){
+			myEnemy.EnemyHP = 100;
+			changePanel();
+			sc.AddStar();
+			sc.UnlockStage();
+			StageController.StarsCount();
+		}
+		abBar.MPbar = 100;
+		abBar.BarUpdate();
+		for(int i = cards.Length -1 ;i>=0;i--){
+			cards[i].IsSelect = false;
+			}
+		}
 
 
-	} 
-
-//	public IEnumerator CreatureCardAttack(){
-//		bool attackReady = false;
-//		AbstractCard[] cards = gameObject.GetComponentsInChildren<AbstractCard>();
-//		for(int i = cards.Length )
-//	}
 	}
 
 

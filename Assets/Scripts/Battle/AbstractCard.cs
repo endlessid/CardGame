@@ -63,7 +63,7 @@ public class AbstractCard : Actor {
 		else if(IsSelect == true && myBar.MPbar < 100)
 		{
 			myBar.MPbar += MP;
-			iTween.MoveTo(gameObject,iTween.Hash("x",transform.localPosition.x,"y",0,"islocal",true,"time",rollTime,"easetype",""));
+			iTween.MoveTo(gameObject,iTween.Hash("x",transform.localPosition.x,"y",0,"islocal",true,"time",rollTime,"easetype","spring"));
 			IsSelect = false;
 		}
 		myBar.BarUpdate();

@@ -19,11 +19,13 @@ public class JsonController : MonoBehaviour {
 
 
 		stageDic = MiniJSON.Json.Deserialize(stageTXT.text) as Dictionary<string,object>;
-		if (PlayerPrefs.HasKey ("Stage1") && DataInput.stageData == null) {
+
+		if (PlayerPrefs.HasKey ("Stage01") && DataInput.stageData == null) {
 						LoadData (theStage);
 				} 
 		else {
-
+				LoadDataInput(DataInput.stageData);
+				SaveData (theStage);
 				}
 		StageController.StarsCount();
 	}	
@@ -51,7 +53,7 @@ public class JsonController : MonoBehaviour {
 	public void LoadStage(){
 
 		foreach(AbstractStage stagechild in theStage){
-			Debug.Log (stagechild.myStageData.stageID);
+//			Debug.Log (stagechild.myStageData.stageID);
 			Dictionary<string,object> childinfo = stageDic[stagechild.myStageData.stageID] as Dictionary<string,object>;
 			stagechild.myStageData.starNum= int.Parse(childinfo["stars"].ToString());
 			stagechild.myStageData.stageName= childinfo["name"].ToString();
@@ -60,7 +62,9 @@ public class JsonController : MonoBehaviour {
 			}		
 			StageController.StarsCount();
 	}
-
+	/// <summary>
+	/// when disabled save the status
+	/// </summary>
 	void OnDisable(){
 		SaveData (theStage);
 		}
@@ -75,10 +79,24 @@ public class JsonController : MonoBehaviour {
 			stageJson["stars"] = savestagechild.myStageData.starNum;
 			stageJson["id"] = savestagechild.myStageData.stageID;
 			string saveJson = MiniJSON.Json.Serialize(stageJson);
-			DataController.SaveJsonData("Stage"+i, saveJson);
+			DataController.SaveJsonData("Stage0"+i, saveJson);
 			Debug.Log("save success");
 			i++;
 		}
+	}
+	/// <summary>
+	/// Loads data of the Datainput.
+	/// </summary>
+	void LoadDataInput(Dictionary<string,object> stageInfo){
+
+		foreach(AbstractStage stageChild in theStage){
+			Dictionary<string,object> childInfo = stageInfo[stageChild.myStageData.stageID] as Dictionary<string,object>;
+			stageChild.myStageData.starNum = int.Parse(childInfo["stars"].ToString());
+			stageChild.myStageData.stageName = childInfo["name"].ToString();
+			stageChild.UpdateStageName();
+			stageChild.UpdateStars(stageChild.myStageData.starNum);
+		}
+		StageController.StarsCount();
 	}
 
 	/// <summary>
@@ -87,7 +105,7 @@ public class JsonController : MonoBehaviour {
 	public static void LoadData(AbstractStage[] stages){
 		int i = 1;
 		foreach (AbstractStage loadstagechild in stages) {
-			string loadjson = DataController.LoadJsonData("Stage"+i);
+			string loadjson = DataController.LoadJsonData("Stage0"+i);
 			Dictionary<string,object> _stageJson = MiniJSON.Json.Deserialize(loadjson) as Dictionary<string,object>;
 			loadstagechild.myStageData.stageID = _stageJson["id"].ToString();
 			loadstagechild.myStageData.starNum= int.Parse(_stageJson["stars"].ToString());

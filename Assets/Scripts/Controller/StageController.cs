@@ -14,7 +14,9 @@ public class StageController : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	IEnumerator Start () {
+		yield return new WaitForSeconds(0.1f);
+		UnlockStage();
 
 
 

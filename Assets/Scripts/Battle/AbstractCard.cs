@@ -5,6 +5,10 @@ using System.Collections;
 public class CardData{
 	public int mpNum = 30;
 	public bool isSelect =false;
+	public bool isCardChara = true;
+	public string cardDes;
+	public string cardHeart;
+	public string cardArmor;
 }
 
 
@@ -16,7 +20,15 @@ public class AbstractCard : Actor {
 	public float rollTime = 0.5f;
 	public Transform[] wayPoints;
 	public AbstractBar myBar;
+	public UILabel labelHeart;
+	public UILabel labelArmor;
+	public UILabel labelCardDes;
+
 	public iTween.EaseType easeType;
+	public bool isCardChara{
+		get{return myCardData.isCardChara;}
+		set{myCardData.isCardChara = value;}
+	}
 	public bool IsSelect{
 		get{return myCardData.isSelect;}
 		set{myCardData.isSelect = value;}
@@ -29,13 +41,24 @@ public class AbstractCard : Actor {
 		get{return damage;}
 		set{damage = value;}
 	}
-
+	public string cDescription{
+		get{return myCardData.cardDes;}
+		set{myCardData.cardDes = value;}
+	}
+	public string cHeart{
+		get{return myCardData.cardHeart;}
+		set{myCardData.cardHeart = value;}
+	}
+	public string cArmor{
+		get{return myCardData.cardArmor;}
+		set{myCardData.cardArmor = value;}
+	}
 	public bool debug;
 
 	// Use this for initialization
 	void Start () {
-		myBar.BarUpdate();
 
+		myBar.BarUpdate();
 	
 	}
 	
@@ -49,15 +72,21 @@ public class AbstractCard : Actor {
 
 	
 	}
-
-
+	/// <summary>
+	/// update the labels on the card model
+	/// </summary>
+	public void UpdateCardLabel(){
+		labelArmor.text = cArmor;
+		labelCardDes.text = cDescription;
+		labelHeart.text = cHeart;
+	}
 
 	//check if card can be select,change mp,roll out & roll back
-	public void CardRollOut(){
+	public  void CardRollOut(){
 
 		if(IsSelect == false && myBar.MPbar >= MP ){
 			myBar.MPbar -= MP;
-			iTween.MoveTo(gameObject,iTween.Hash("x",transform.localPosition.x,"y",rollOut,"islocal",true,"time",rollTime,"easetype","linear"));
+			iTween.MoveTo(gameObject,iTween.Hash("x",transform.localPosition.x,"y",rollOut,"islocal",true,"time",rollTime,"easetype","spring"));
 			IsSelect = true;
 		}
 		else if(IsSelect == true && myBar.MPbar < 100)
@@ -69,18 +98,39 @@ public class AbstractCard : Actor {
 		myBar.BarUpdate();
 		}
 
-	//check card isselectd & card attack enemy and return
+	/// <summary>
+	/// check cardtype and attck in the way which depends on the type
+	/// </summary>
+	/// <param name="target">Target.</param>
 	public void CardAttackMove(Transform target){
-		if (IsSelect == true) {
+		if(isCardChara){
+			if (IsSelect == true) {
 						Hashtable arg = new Hashtable ();
 						wayPoints [0] = transform;
 						wayPoints [1] = target;
 						wayPoints [2] = transform;
+//						iTween.ScaleFrom(gameObject,);
 						arg.Add ("path", wayPoints);
 						arg.Add ("time", 0.6f);
 						arg.Add ("easetype", easeType);
 						iTween.MoveFrom (gameObject, arg);
 				}
+		}
+		else{
+			if (IsSelect == true) {
+				Hashtable arg = new Hashtable ();
+				wayPoints [0] = transform;
+				wayPoints [1] = target;
+				Hashtable scl = new Hashtable();
+
+				arg.Add ("path", wayPoints);
+				arg.Add ("time", 0.4f);
+				arg.Add ("easetype", easeType);
+				iTween.ScaleFrom(gameObject,scl);
+				iTween.MoveFrom (gameObject, arg);
+				Destroy(this);
+				}
+			}
 		  				
 		}
 

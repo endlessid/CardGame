@@ -121,12 +121,9 @@ public class AbstractCard : Actor {
 				Hashtable arg = new Hashtable ();
 				wayPoints [0] = transform;
 				wayPoints [1] = target;
-				Hashtable scl = new Hashtable();
-
 				arg.Add ("path", wayPoints);
 				arg.Add ("time", 0.4f);
 				arg.Add ("easetype", easeType);
-				iTween.ScaleFrom(gameObject,scl);
 				iTween.MoveFrom (gameObject, arg);
 				Destroy(this);
 				}

@@ -15,11 +15,8 @@ public class BattleController : MonoBehaviour {
 	public StageController sc;
 //	public bool debug;
 //	public bool debug1;
-
-
-
-
 	// Use this for initialization
+
 	void Start () {
 
 	

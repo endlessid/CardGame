@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BattleController : MonoBehaviour {
 
@@ -13,13 +14,17 @@ public class BattleController : MonoBehaviour {
 	public Enemy myEnemy;
 	public Player myPlayer;
 	public StageController sc;
+	public TextAsset cardAsset;
+	List<object> cards;
 //	public bool debug;
 //	public bool debug1;
 	// Use this for initialization
 
 	void Start () {
-
-	
+		//load card info from txt and make them a list<>
+		Dictionary<string,object>  cardDic  = MiniJSON.Json.Deserialize(cardAsset.text) as Dictionary<string,object>;
+		cards = cardDic["cards"]as List<object>;
+		Debug.Log(cards.Count);
 	}
 	
 	// Update is called once per frame
@@ -28,10 +33,20 @@ public class BattleController : MonoBehaviour {
 
 
 	}
+
+
 	//add count cards into deck
 	public void GenerateCard(int count){
 		for(int i = 0;i < count ;i++){
 			GameObject newCard = NGUITools.AddChild(cardDeck.gameObject,cardPrefab);
+			Dictionary<string,object> cardInfo = cards[i] as Dictionary<string,object>;
+			newCard.GetComponent<AbstractCard>().cHeart= int.Parse(cardInfo["heart"].ToString());
+//			Debug.Log(int.Parse(cardInfo["heart"].ToString()));
+			newCard.GetComponent<AbstractCard>().cDescription=cardInfo["description"].ToString();
+//			Debug.Log(cardInfo["description"].ToString());
+			newCard.GetComponent<AbstractCard>().cArmor=int.Parse(cardInfo["armor"].ToString());
+//			Debug.Log(int.Parse(cardInfo["armor"].ToString()));
+			newCard.GetComponent<AbstractCard>().isCardChara= bool.Parse(cardInfo["iscardchar"].ToString());
 			newCard.transform.localPosition = new Vector3(3,3,-10);
 			newCard.transform.RotateAround(newCard.transform.position,Vector3.up,180);
 			newCard.GetComponent<AbstractCard>().myBar = abBar ;
@@ -39,11 +54,12 @@ public class BattleController : MonoBehaviour {
 		if(count>0){
 			cardDeck.Reposition();
 		}
+		cards.RemoveRange(0,count-1);
 	}
 
 
 
-	public void DestoryAllCards(){
+	public void DestoryAllCards(){ 
 		GameObject[] cards = GameObject.FindGameObjectsWithTag("Card");
 		for(int i = cards.Length-1;i>=0;i--){
 			Destroy(cards[i]);
@@ -59,12 +75,13 @@ public class BattleController : MonoBehaviour {
 		AbstractCard[] cards = cardDeck.GetComponentsInChildren<AbstractCard>();
 		for(int i = cards.Length-1;i>=0;i--){
 			if(cards[i].IsSelect){
+				//wait untill attack finish
 				cards[i].CardAttackMove(myEnemy.transform);
-				yield return new WaitForSeconds(0.6f);
-		
+				yield return new WaitForSeconds(0.6f);						
 			}
 		}
-		cardDeck.Reposition ();
+		AbstractCard[] remaincards = cardDeck.GetComponentsInChildren<AbstractCard>();
+		GenerateCard(5 - remaincards.Length);
 		if(myEnemy.EnemyHP >0){		
 			abBar.HPbar -=myEnemy.EnemyDMG;
 			yield return new WaitForSeconds(1f);
@@ -78,7 +95,8 @@ public class BattleController : MonoBehaviour {
 		}
 		abBar.MPbar = 100;
 		abBar.BarUpdate();
-		for(int i = cards.Length -1 ;i>=0;i--){
+		AbstractCard[] allcards = cardDeck.GetComponentsInChildren<AbstractCard>();
+		for(int i = allcards.Length -1 ;i>=0;i--){
 			cards[i].IsSelect = false;
 			}
 		}

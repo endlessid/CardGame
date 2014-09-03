@@ -13,7 +13,7 @@ public class SQLtest : MonoBehaviour {
 		WWW wWw = new WWW(listUrl);
 		yield return wWw;
 
-		Dictionary<string,object> testDic = MiniJSON.Json.Deserialize(wWw.text) as Dictionary<string,object>;
+//		Dictionary<string,object> testDic = MiniJSON.Json.Deserialize(wWw.text) as Dictionary<string,object>;
 
 //		Debug.Log (testDic["id"].ToString());
 	}

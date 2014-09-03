@@ -3,12 +3,13 @@ using System.Collections;
 
 [System.Serializable]
 public class CardData{
+
 	public int mpNum = 30;
 	public bool isSelect =false;
-	public bool isCardChara = true;
+	public bool isCardChara ;
 	public string cardDes;
-	public string cardHeart;
-	public string cardArmor;
+	public int cardHeart;
+	public int cardArmor;
 }
 
 
@@ -45,11 +46,11 @@ public class AbstractCard : Actor {
 		get{return myCardData.cardDes;}
 		set{myCardData.cardDes = value;}
 	}
-	public string cHeart{
+	public int cHeart{
 		get{return myCardData.cardHeart;}
 		set{myCardData.cardHeart = value;}
 	}
-	public string cArmor{
+	public int cArmor{
 		get{return myCardData.cardArmor;}
 		set{myCardData.cardArmor = value;}
 	}
@@ -76,9 +77,9 @@ public class AbstractCard : Actor {
 	/// update the labels on the card model
 	/// </summary>
 	public void UpdateCardLabel(){
-		labelArmor.text = cArmor;
+		labelArmor.text = cArmor.ToString();
 		labelCardDes.text = cDescription;
-		labelHeart.text = cHeart;
+		labelHeart.text = cHeart.ToString();
 	}
 
 	//check if card can be select,change mp,roll out & roll back
@@ -125,7 +126,7 @@ public class AbstractCard : Actor {
 				arg.Add ("time", 0.4f);
 				arg.Add ("easetype", easeType);
 				iTween.MoveFrom (gameObject, arg);
-				Destroy(this);
+				Destroy(gameObject);
 				}
 			}
 		  				

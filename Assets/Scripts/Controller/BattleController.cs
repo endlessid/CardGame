@@ -24,7 +24,7 @@ public class BattleController : MonoBehaviour {
 		//load card info from txt and make them a list<>
 		Dictionary<string,object>  cardDic  = MiniJSON.Json.Deserialize(cardAsset.text) as Dictionary<string,object>;
 		cards = cardDic["cards"]as List<object>;
-		Debug.Log(cards.Count);
+
 	}
 	
 	// Update is called once per frame
@@ -41,20 +41,21 @@ public class BattleController : MonoBehaviour {
 			GameObject newCard = NGUITools.AddChild(cardDeck.gameObject,cardPrefab);
 			Dictionary<string,object> cardInfo = cards[i] as Dictionary<string,object>;
 			newCard.GetComponent<AbstractCard>().cHeart= int.Parse(cardInfo["heart"].ToString());
-//			Debug.Log(int.Parse(cardInfo["heart"].ToString()));
 			newCard.GetComponent<AbstractCard>().cDescription=cardInfo["description"].ToString();
-//			Debug.Log(cardInfo["description"].ToString());
 			newCard.GetComponent<AbstractCard>().cArmor=int.Parse(cardInfo["armor"].ToString());
-//			Debug.Log(int.Parse(cardInfo["armor"].ToString()));
 			newCard.GetComponent<AbstractCard>().isCardChara= bool.Parse(cardInfo["iscardchar"].ToString());
 			newCard.transform.localPosition = new Vector3(3,3,-10);
 			newCard.transform.RotateAround(newCard.transform.position,Vector3.up,180);
 			newCard.GetComponent<AbstractCard>().myBar = abBar ;
+			newCard.GetComponent<AbstractCard>().UpdateCardLabel();
+
+
 		}
 		if(count>0){
-			cardDeck.Reposition();
+			cards.RemoveRange(0,count);
+
 		}
-		cards.RemoveRange(0,count-1);
+		cardDeck.Reposition();
 	}
 
 
@@ -76,7 +77,7 @@ public class BattleController : MonoBehaviour {
 		for(int i = cards.Length-1;i>=0;i--){
 			if(cards[i].IsSelect){
 				//wait untill attack finish
-				cards[i].CardAttackMove(myEnemy.transform);
+				cards[i].StartCoroutine("CardAttackMove",myEnemy.transform);
 				yield return new WaitForSeconds(0.6f);						
 			}
 		}

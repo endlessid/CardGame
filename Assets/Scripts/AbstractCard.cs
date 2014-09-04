@@ -20,6 +20,7 @@ public class AbstractCard : Actor {
 	public int rollOut = 1;
 	public float rollTime = 0.5f;
 	public Transform[] wayPoints;
+	public Transform[] swayPoints;
 	public AbstractBar myBar;
 	public UILabel labelHeart;
 	public UILabel labelArmor;
@@ -54,7 +55,7 @@ public class AbstractCard : Actor {
 		get{return myCardData.cardArmor;}
 		set{myCardData.cardArmor = value;}
 	}
-	public bool debug;
+//	public bool debug;
 
 	// Use this for initialization
 	void Start () {
@@ -65,11 +66,11 @@ public class AbstractCard : Actor {
 	
 	// Update is called once per frame
 	void Update () {
-		if(debug){
-			GameObject go = GameObject.FindGameObjectWithTag("Enemy");
-			CardAttackMove (go.transform);
-			debug = false;
-		}
+//		if(debug){
+//			GameObject go = GameObject.FindGameObjectWithTag("Enemy");
+//			CardAttackMove (go.transform);
+//			debug = false;
+//		}
 
 	
 	}
@@ -103,7 +104,7 @@ public class AbstractCard : Actor {
 	/// check cardtype and attck in the way which depends on the type
 	/// </summary>
 	/// <param name="target">Target.</param>
-	public void CardAttackMove(Transform target){
+	public IEnumerator CardAttackMove(Transform target){
 		if(isCardChara){
 			if (IsSelect == true) {
 						Hashtable arg = new Hashtable ();
@@ -118,32 +119,15 @@ public class AbstractCard : Actor {
 				}
 		}
 		else{
-			if (IsSelect == true) {
-				Hashtable arg = new Hashtable ();
-				wayPoints [0] = transform;
-				wayPoints [1] = target;
-				arg.Add ("path", wayPoints);
-				arg.Add ("time", 0.4f);
-				arg.Add ("easetype", easeType);
-				iTween.MoveFrom (gameObject, arg);
-				Destroy(gameObject);
+			if (IsSelect == true) {						
+				iTween.MoveTo(gameObject,iTween.Hash("position",target.transform,"time",0.3f,"easetype",easeType));			
+				yield return new WaitForSeconds(0.4f);
+				Destroy(gameObject);			
 				}
 			}
 		  				
 		}
 
-//	public void CardSuicide(Transform target){
-//		if (IsSelect == true) {
-//			Hashtable arg = new Hashtable ();
-//			wayPoints [0] = transform;
-//			wayPoints [1] = target;
-//			arg.Add ("path", wayPoints);
-//			arg.Add ("time", 0.5f);
-//			arg.Add ("easetype", easeType);
-//			iTween.MoveFrom (gameObject, arg);
-//		}
-//
-//	}
 
 	}
 

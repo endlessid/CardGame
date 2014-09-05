@@ -10,6 +10,7 @@ public class CardData{
 	public string cardDes;
 	public int cardHeart;
 	public int cardArmor;
+	public int cardLevel;
 }
 
 
@@ -25,6 +26,7 @@ public class AbstractCard : Actor {
 	public UILabel labelHeart;
 	public UILabel labelArmor;
 	public UILabel labelCardDes;
+	public UILabel lableLevel;
 
 	public iTween.EaseType easeType;
 	public bool isCardChara{
@@ -50,6 +52,10 @@ public class AbstractCard : Actor {
 	public int cHeart{
 		get{return myCardData.cardHeart;}
 		set{myCardData.cardHeart = value;}
+	}
+	public int cLevel{
+		get{return myCardData.cardLevel;}
+		set{myCardData.cardLevel = value;}
 	}
 	public int cArmor{
 		get{return myCardData.cardArmor;}
@@ -81,6 +87,7 @@ public class AbstractCard : Actor {
 		labelArmor.text = cArmor.ToString();
 		labelCardDes.text = cDescription;
 		labelHeart.text = cHeart.ToString();
+		lableLevel.text = cLevel.ToString();
 	}
 
 	//check if card can be select,change mp,roll out & roll back

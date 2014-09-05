@@ -35,11 +35,12 @@ public class BattleController : MonoBehaviour {
 	}
 
 
-	//add count cards into deck
+	//add count cards into deck & read data from json
 	public void GenerateCard(int count){
 		for(int i = 0;i < count ;i++){
 			GameObject newCard = NGUITools.AddChild(cardDeck.gameObject,cardPrefab);
 			Dictionary<string,object> cardInfo = cardsList[i] as Dictionary<string,object>;
+			newCard.GetComponent<AbstractCard>().cLevel= int.Parse(cardInfo["level"].ToString());
 			newCard.GetComponent<AbstractCard>().cHeart= int.Parse(cardInfo["heart"].ToString());
 			newCard.GetComponent<AbstractCard>().cDescription=cardInfo["description"].ToString();
 			newCard.GetComponent<AbstractCard>().cArmor=int.Parse(cardInfo["armor"].ToString());
@@ -49,6 +50,7 @@ public class BattleController : MonoBehaviour {
 			newCard.GetComponent<AbstractCard>().myBar = abBar ;
 			newCard.GetComponent<AbstractCard>().UpdateCardLabel();
 		}
+		//remove added cards info from list
 		if(count>0){
 			cardsList.RemoveRange(0,count);
 

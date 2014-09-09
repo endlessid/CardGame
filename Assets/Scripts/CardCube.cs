@@ -21,6 +21,8 @@ public class CardCube : MonoBehaviour {
 	}
 
 
+
+
 	// Use this for initialization
 	void Start () {
 
@@ -34,6 +36,14 @@ public class CardCube : MonoBehaviour {
 	public void UpdateCubeData(){
 		level.text = bLevel.ToString();
 	}
-
+	public void ShowCube(bool show){
+		UIWidget _cube = transform.GetComponent<UIWidget>();
+		if(show){
+			_cube.alpha = 1;
+		}
+		else{
+			_cube.alpha = 0;
+		}
+	}
 }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      

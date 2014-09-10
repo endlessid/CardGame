@@ -25,7 +25,7 @@ public class BagController : MonoBehaviour {
 		cubeArray = cardMatrix.GetComponentsInChildren<CardCube>();
 //		Debug.Log(cubeArray.Length);
 		ShowBagPage(1);
-		Debug.Log(ShowBagPage(1));
+
 
 	}
 	

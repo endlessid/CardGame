@@ -5,26 +5,32 @@ using System.Collections.Generic;
 public class MusicController : MonoBehaviour {
 
 	public AudioSource mapBGM;
-	public AudioSource stageBGM;
+	public AudioSource battleBGM;
+	public AudioSource hitEffect;
 
 	public List<AudioClip> bgmList;
-
 
 	// Use this for initialization
 
 
 	void Start () {
+
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
 	
 	}
-	public void PlayBGM(int count){
-//		mapBGM.Stop();
-//		stageBGM.clip = bgm;
-//		stageBGM.Play();
-
+	public void HitSound(){
+		hitEffect.Play ();
+	}
+	public void PlayBGM(GameObject obj){
+		mapBGM.Stop();
+		int count = int.Parse (obj.name) - 1;
+		Debug.Log (count);
+		battleBGM.clip = bgmList[count];
+		battleBGM.Play();
 	}
 }

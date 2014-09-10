@@ -6,6 +6,8 @@ public class PanelController : MonoBehaviour {
 	public UIPanel battlePanel;
 	public BattleController battleCtrl;
 	public StageController stageCtrl;
+	public AbstractBar abBar;
+	public ParticleSystem bubble;
 
 
 	// Use this for initialization
@@ -29,6 +31,9 @@ public class PanelController : MonoBehaviour {
 		TweenPosition battleTween = battlePanel.GetComponent<TweenPosition>();
 		battleTween.PlayForward ();
 		battleCtrl.GenerateCard(5);
+		abBar.HPbar = 100;
+		bubble.Play();
+
 
 	}
 	public void changeToStage(){
@@ -37,6 +42,8 @@ public class PanelController : MonoBehaviour {
 		TweenPosition battleTween = battlePanel.GetComponent<TweenPosition>();
 		battleTween.PlayReverse ();
 		battleCtrl.DestoryAllCards ();
+		abBar.HPbar =100;
+		bubble.Stop ();
 
 	}
 

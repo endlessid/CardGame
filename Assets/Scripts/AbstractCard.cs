@@ -118,7 +118,6 @@ public class AbstractCard : Actor {
 						wayPoints [0] = transform;
 						wayPoints [1] = target;
 						wayPoints [2] = transform;
-//						iTween.ScaleFrom(gameObject,);
 						arg.Add ("path", wayPoints);
 						arg.Add ("time", 0.6f);
 						arg.Add ("easetype", easeType);

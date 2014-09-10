@@ -8,6 +8,7 @@ using System.Collections;
 
 public class Enemy : Actor {
 
+
 	public int EnemyDMG=20;
 	public AbstractBar myBar;
 	public int EnemyHP{
@@ -43,11 +44,6 @@ public class Enemy : Actor {
 	void OnTriggerEnter(Collider other){
 		Actor act = other.GetComponent<Actor> ();
 		EnemyUnderAttack (act);
-		Hashtable camshake = new Hashtable();
-		camshake.Add ("y",0.2f);
-		camshake.Add("time",0.2f);
-		UICamera camera = gameObject.transform.parent.parent.GetComponentInChildren<UICamera>();
-		iTween.ShakePosition(camera.gameObject,camshake);
 	} 
 
 }

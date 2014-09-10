@@ -16,6 +16,8 @@ public class BattleController : MonoBehaviour {
 	public StageController sc;
 	public TextAsset cardAsset;
 	List<object> cardsList;
+	public GameObject mermaid;
+	public UISprite warningSign;
 //	public bool debug;
 //	public bool debug1;
 	// Use this for initialization
@@ -24,7 +26,7 @@ public class BattleController : MonoBehaviour {
 		//load card info from txt and make them a list<>
 		Dictionary<string,object>  cardDic  = MiniJSON.Json.Deserialize(cardAsset.text) as Dictionary<string,object>;
 		cardsList = cardDic["cards"]as List<object>;
-
+		warningSign.alpha = 0;
 	}
 	
 	// Update is called once per frame
@@ -45,7 +47,7 @@ public class BattleController : MonoBehaviour {
 			newCard.GetComponent<AbstractCard>().cDescription=cardInfo["description"].ToString();
 			newCard.GetComponent<AbstractCard>().cArmor=int.Parse(cardInfo["armor"].ToString());
 			newCard.GetComponent<AbstractCard>().isCardChara= bool.Parse(cardInfo["iscardchar"].ToString());
-			newCard.transform.localPosition = new Vector3(3,3,-10);
+			newCard.transform.localPosition = new Vector3(3,-2,-5);
 			newCard.transform.RotateAround(newCard.transform.position,Vector3.up,180);
 			newCard.GetComponent<AbstractCard>().myBar = abBar ;
 			newCard.GetComponent<AbstractCard>().UpdateCardLabel();
@@ -79,21 +81,28 @@ public class BattleController : MonoBehaviour {
 			if(cards[i].IsSelect){
 				//wait untill attack finish
 				cards[i].StartCoroutine("CardAttackMove",myEnemy.transform);
-				yield return new WaitForSeconds(0.6f);						
+				yield return new WaitForSeconds(0.1f);
+				iTween.ShakeScale(mermaid,new Vector3(1.3f,1.3f,1.0f),0.3f);
+				yield return new WaitForSeconds(0.5f);
+
 			}
 		}
-		//fill vacancies with cards &check vacancies and cardlist which one is bigger in case of index out range
-		AbstractCard[] remaincards = cardDeck.GetComponentsInChildren<AbstractCard>();
-		if(cardsList.Count < 5-remaincards.Length){
-		GenerateCard(cardsList.Count);
-		}
-		else{
-			GenerateCard(5-remaincards.Length);
-		}
-		//deal damage to enemy if its reach 0 change panel &update bars
-		if(myEnemy.EnemyHP >0){		
-			abBar.HPbar -=myEnemy.EnemyDMG;
+	
+		//deal damage to enemy & if its reach 0 change panel &update bars
+		if(myEnemy.EnemyHP >0){
+			warningSign.alpha = 1;
+			iTween.PunchRotation(warningSign.gameObject,new Vector3(0,180f,0),1f);
 			yield return new WaitForSeconds(1f);
+			warningSign.alpha = 0;
+			yield return new WaitForSeconds(0.2f);
+			iTween.PunchScale(mermaid,new Vector3(2.0f,2.0f,1.0f),0.4f);
+			Hashtable camshake = new Hashtable();
+			camshake.Add ("y",0.2f);
+			camshake.Add("time",0.2f);
+			UICamera camera = gameObject.transform.parent.GetComponentInChildren<UICamera>();
+			iTween.ShakePosition(camera.gameObject,camshake);
+			abBar.HPbar -=myEnemy.EnemyDMG;
+			yield return new WaitForSeconds(0.4f);
 		}
 		else if(myEnemy.EnemyHP <=0){
 			myEnemy.EnemyHP = 100;
@@ -104,10 +113,18 @@ public class BattleController : MonoBehaviour {
 		}
 		abBar.MPbar = 100;
 		abBar.BarUpdate();
+		//fill vacancies with cards &check vacancies and cardlist which one is bigger in case of index out range
+		AbstractCard[] remaincards = cardDeck.GetComponentsInChildren<AbstractCard>();
+		if(cardsList.Count < 5-remaincards.Length){
+			GenerateCard(cardsList.Count);
+		}
+		else{
+			GenerateCard(5-remaincards.Length);
+		}
 		//make cards back to unselected
 		AbstractCard[] allcards = cardDeck.GetComponentsInChildren<AbstractCard>();
-		for(int i = allcards.Length -1 ;i>=0;i--){
-			cards[i].IsSelect = false;
+		foreach(AbstractCard cardchild in allcards){
+			cardchild.IsSelect = false;
 			}
 		}
 

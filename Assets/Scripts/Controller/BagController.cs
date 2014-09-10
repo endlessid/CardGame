@@ -9,9 +9,11 @@ public class BagController : MonoBehaviour {
 	List<object> cubeList;
 	public TextAsset cubeAsset;
 	public UILabel pageCounter;
-	int maxPageIndex;
+	int max_pageIndex;
 	public bool pre;
 	public bool next;
+	public int pageIndex;
+	public bool changepage;
 
 
 	// Use this for initialization
@@ -29,13 +31,17 @@ public class BagController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(changepage){
+			ShowBagPage(pageIndex);
+			changepage=false;
+		}
 		if(pre){
 			PreviousPage ();
 			pre=false;
 		}
 		if(next){
 			NextPage ();
-			Debug.Log(maxPageIndex);
+			Debug.Log(max_pageIndex);
 			next=false;
 		}
 		
@@ -48,24 +54,25 @@ public class BagController : MonoBehaviour {
 		return int.Parse(cubeInfo["level"].ToString());
 	}
 
-	//show certain page of bag accroding to pageindex
-	public int ShowBagPage(int pageIndex){
+	//show certain page of bag accroding to _pageIndex
+	public int ShowBagPage(int _pageIndex){
+		pageIndex = _pageIndex;
 		//max slots in itemstorage 16
 		int pageMaxSlot = cubeArray.Length;
 		//maxslots of multiple pages 16*n
-		int totalIndex = pageIndex * pageMaxSlot;
+		int totalIndex = _pageIndex * pageMaxSlot;
 		//number of cube data 21
 		int count = cubeList.Count;
 		for(int i = totalIndex;i<totalIndex+pageMaxSlot;i++ ){
 			//if not last page
-			if(pageIndex < count/pageMaxSlot){
+			if(_pageIndex < count/pageMaxSlot){
 				cubeArray[i%pageMaxSlot].bLevel = GetLevelFromTxt(i);
 				cubeArray[i%pageMaxSlot].UpdateCubeData();
 				cubeArray[i%pageMaxSlot].ShowCube(true);
 
 			}
 			//last page or latter
-			else if(pageIndex >= count/pageMaxSlot){
+			else if(_pageIndex >= count/pageMaxSlot){
 				//assign cube data
 				if(i%pageMaxSlot <count%pageMaxSlot && i<count ){
 					cubeArray[i%pageMaxSlot].bLevel = GetLevelFromTxt(i);
@@ -80,15 +87,18 @@ public class BagController : MonoBehaviour {
 			}
 
 		}
-		pageCounter.text= (pageIndex+1) + "/" + (count/pageMaxSlot+1);
+		pageCounter.text= (_pageIndex+1) + "/" + (count/pageMaxSlot+1);
 		return pageIndex;
 	}
 
+
 	public void PreviousPage(){
+//		if(pageIndex)
 
 	}
 	public void NextPage(){
-		maxPageIndex = cubeList.Count/cubeArray.Length+1;
+
+		max_pageIndex = cubeList.Count/cubeArray.Length+1;
 
 	}
 

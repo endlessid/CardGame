@@ -8,6 +8,8 @@ public class PanelController : MonoBehaviour {
 	public StageController stageCtrl;
 	public AbstractBar abBar;
 	public ParticleSystem bubble;
+	public AudioSource mapBGM;
+	public AudioSource battleBGM;
 
 
 	// Use this for initialization
@@ -44,7 +46,8 @@ public class PanelController : MonoBehaviour {
 		battleCtrl.DestoryAllCards ();
 		abBar.HPbar =100;
 		bubble.Stop ();
-
+		mapBGM.Play();
+		battleBGM.Stop();
 	}
 
 

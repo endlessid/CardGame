@@ -4,6 +4,7 @@ using System.Collections;
 public class Actor : MonoBehaviour {
 	public int hp;
 	public int damage;
+	public AudioSource hitEffect;
 
 	// Use this for initialization
 	void Start () {
@@ -20,5 +21,6 @@ public class Actor : MonoBehaviour {
 	}
 	public virtual void UnderAttack(Actor attcker){
 		hp -= attcker.damage;
+		hitEffect.Play();
 	}
 }

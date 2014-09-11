@@ -11,6 +11,7 @@ public class CardData{
 	public int cardHeart;
 	public int cardArmor;
 	public int cardLevel;
+	public string spriteName ;
 }
 
 
@@ -27,8 +28,13 @@ public class AbstractCard : Actor {
 	public UILabel labelArmor;
 	public UILabel labelCardDes;
 	public UILabel lableLevel;
+	public UISprite cardFront;
 
 	public iTween.EaseType easeType;
+	public string cName{
+		get{return myCardData.spriteName;}
+		set{myCardData.spriteName = value;}
+	}
 	public bool isCardChara{
 		get{return myCardData.isCardChara;}
 		set{myCardData.isCardChara = value;}
@@ -88,6 +94,8 @@ public class AbstractCard : Actor {
 		labelCardDes.text = cDescription;
 		labelHeart.text = cHeart.ToString();
 		lableLevel.text = cLevel.ToString();
+		cardFront.spriteName = cName.ToString();
+
 	}
 
 	//check if card can be select,change mp,roll out & roll back

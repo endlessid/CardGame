@@ -1,8 +1,6 @@
 fileFormatVersion: 2
 guid: 8d78f00d5d314f1488f0a3c2633b348f
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: CardIcon
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -26,10 +24,10 @@ TextureImporter:
   maxTextureSize: 4096
   textureSettings:
     filterMode: 2
-    aniso: 1
+    aniso: 4
     mipBias: -1
     wrapMode: 1
-  nPOTScale: 0
+  nPOTScale: 1
   lightmap: 0
   compressionQuality: 50
   spriteMode: 1

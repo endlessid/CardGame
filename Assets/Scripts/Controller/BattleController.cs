@@ -18,6 +18,8 @@ public class BattleController : MonoBehaviour {
 	List<object> cardsList;
 	public GameObject mermaid;
 	public UISprite warningSign;
+	public AudioSource counterEffect;
+
 //	public bool debug;
 //	public bool debug1;
 	// Use this for initialization
@@ -47,6 +49,7 @@ public class BattleController : MonoBehaviour {
 			newCard.GetComponent<AbstractCard>().cDescription=cardInfo["description"].ToString();
 			newCard.GetComponent<AbstractCard>().cArmor=int.Parse(cardInfo["armor"].ToString());
 			newCard.GetComponent<AbstractCard>().isCardChara= bool.Parse(cardInfo["iscardchar"].ToString());
+			newCard.GetComponent<AbstractCard>().cName=cardInfo["spritename"].ToString();
 			newCard.transform.localPosition = new Vector3(3,-2,-5);
 			newCard.transform.RotateAround(newCard.transform.position,Vector3.up,180);
 			newCard.GetComponent<AbstractCard>().myBar = abBar ;
@@ -82,7 +85,7 @@ public class BattleController : MonoBehaviour {
 				//wait untill attack finish
 				cards[i].StartCoroutine("CardAttackMove",myEnemy.transform);
 				yield return new WaitForSeconds(0.1f);
-				iTween.ShakeScale(mermaid,new Vector3(1.3f,1.3f,1.0f),0.3f);
+				iTween.ShakeScale(mermaid,new Vector3(1.3f,1.3f,1.0f),0.5f);
 				yield return new WaitForSeconds(0.5f);
 
 			}
@@ -101,6 +104,7 @@ public class BattleController : MonoBehaviour {
 			camshake.Add("time",0.2f);
 			UICamera camera = gameObject.transform.parent.GetComponentInChildren<UICamera>();
 			iTween.ShakePosition(camera.gameObject,camshake);
+			counterEffect.Play();
 			abBar.HPbar -=myEnemy.EnemyDMG;
 			yield return new WaitForSeconds(0.4f);
 		}

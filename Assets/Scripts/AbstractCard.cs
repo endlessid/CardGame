@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class CardData{
@@ -12,6 +13,7 @@ public class CardData{
 	public int cardArmor;
 	public int cardLevel;
 	public string spriteName ;
+
 }
 
 
@@ -28,7 +30,10 @@ public class AbstractCard : Actor {
 	public UILabel labelArmor;
 	public UILabel labelCardDes;
 	public UILabel lableLevel;
-	public UISprite cardFront;
+	public Renderer cardFront;
+
+
+
 
 	public iTween.EaseType easeType;
 	public string cName{
@@ -72,6 +77,12 @@ public class AbstractCard : Actor {
 	// Use this for initialization
 	void Start () {
 
+	
+//		if(texturesList ==null || texturesList.Length ==0){
+//		Debug.Log("empty");
+//		}
+
+	
 		myBar.BarUpdate();
 	
 	}
@@ -90,13 +101,28 @@ public class AbstractCard : Actor {
 	/// update the labels on the card model
 	/// </summary>
 	public void UpdateCardLabel(){
+		Object[] texturesList = Resources.LoadAll<Texture2D>("monster");
+		for(int i=0;i<texturesList.Length;i++){
+			Debug.Log(texturesList[i].name);
+			if(texturesList[i].name == cName.ToString())
+			{
+				cardFront.renderer.material.mainTexture =  (Texture2D)texturesList[i];
+				
+			}
+		}
 		labelArmor.text = cArmor.ToString();
 		labelCardDes.text = cDescription;
 		labelHeart.text = cHeart.ToString();
-		lableLevel.text = cLevel.ToString();
-		cardFront.spriteName = cName.ToString();
+		lableLevel.text = cLevel.ToString();	
+//		foreach(Texture2D texturechild in texturesList){
+//			if(texturechild.name == cName.ToString()){
+//				cardFront.material.mainTexture = texturechild; 
+//			}			
+//		}    
+	}                     
+		 
 
-	}
+
 
 	//check if card can be select,change mp,roll out & roll back
 	public  void CardRollOut(){

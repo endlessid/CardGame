@@ -20,6 +20,7 @@ public class BattleController : MonoBehaviour {
 	public UISprite warningSign;
 	public AudioSource counterEffect;
 
+
 //	public bool debug;
 //	public bool debug1;
 	// Use this for initialization

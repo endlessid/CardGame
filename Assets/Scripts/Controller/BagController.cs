@@ -93,7 +93,9 @@ public class BagController : MonoBehaviour {
 
 
 	public void PreviousPage(){
-//		if(pageIndex)
+		if(pageIndex <= 0){
+			this.collider.enabled = false;
+		}
 
 	}
 	public void NextPage(){

@@ -20,6 +20,7 @@ public class CardData{
 public class AbstractCard : Actor {
 
 
+
 	public CardData myCardData;
 	public int rollOut = 1;
 	public float rollTime = 0.5f;
@@ -31,9 +32,7 @@ public class AbstractCard : Actor {
 	public UILabel labelCardDes;
 	public UILabel lableLevel;
 	public Renderer cardFront;
-
-
-
+	 
 
 	public iTween.EaseType easeType;
 	public string cName{
@@ -72,28 +71,15 @@ public class AbstractCard : Actor {
 		get{return myCardData.cardArmor;}
 		set{myCardData.cardArmor = value;}
 	}
-//	public bool debug;
+
 
 	// Use this for initialization
-	void Start () {
-
-	
-//		if(texturesList ==null || texturesList.Length ==0){
-//		Debug.Log("empty");
-//		}
-
-	
-		myBar.BarUpdate();
-	
+	void Start () {	
+		myBar.BarUpdate();	
 	}
 	
 	// Update is called once per frame
 	void Update () {
-//		if(debug){
-//			GameObject go = GameObject.FindGameObjectWithTag("Enemy");
-//			CardAttackMove (go.transform);
-//			debug = false;
-//		}
 
 	
 	}
@@ -101,24 +87,19 @@ public class AbstractCard : Actor {
 	/// update the labels on the card model
 	/// </summary>
 	public void UpdateCardLabel(){
+
 		Object[] texturesList = Resources.LoadAll<Texture2D>("monster");
 		for(int i=0;i<texturesList.Length;i++){
-			Debug.Log(texturesList[i].name);
 			if(texturesList[i].name == cName.ToString())
 			{
-				cardFront.renderer.material.mainTexture =  (Texture2D)texturesList[i];
-				
+				cardFront.renderer.material.mainTexture =  (Texture2D)texturesList[i];				
 			}
 		}
 		labelArmor.text = cArmor.ToString();
 		labelCardDes.text = cDescription;
 		labelHeart.text = cHeart.ToString();
 		lableLevel.text = cLevel.ToString();	
-//		foreach(Texture2D texturechild in texturesList){
-//			if(texturechild.name == cName.ToString()){
-//				cardFront.material.mainTexture = texturechild; 
-//			}			
-//		}    
+ 
 	}                     
 		 
 

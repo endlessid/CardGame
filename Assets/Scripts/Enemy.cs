@@ -43,7 +43,10 @@ public class Enemy : Actor {
 
 	void OnTriggerEnter(Collider other){
 		Actor act = other.GetComponent<Actor> ();
-		EnemyUnderAttack (act);
+		if(act !=null){
+			EnemyUnderAttack (act);
+		}
+		
 	} 
 
 }

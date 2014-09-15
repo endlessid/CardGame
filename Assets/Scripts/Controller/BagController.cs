@@ -5,17 +5,20 @@ using System.Collections.Generic;
 public class BagController : MonoBehaviour {
 
 	public UIItemStorage cardMatrix;
-	public CardCube[] cubeArray;
+	CardCube[] cubeArray;
 	List<object> cubeList;
 	public TextAsset cubeAsset;
 	public UILabel pageCounter;
-	int max_pageIndex;
-	public bool pre;
-	public bool next;
-	public int pageIndex;
+	public UISprite escapeButton;
+
+	int pageIndex;
+	int maxPageIndex;
 
 	public UISprite priviousPage;
 	public UISprite nextPage;
+
+	public delegate void ChangeToMap();
+	public ChangeToMap changePanel;
 
 
 
@@ -25,20 +28,16 @@ public class BagController : MonoBehaviour {
 		//read cubeinfo from txt
 		Dictionary<string,object> cubeDic = MiniJSON.Json.Deserialize(cubeAsset.text) as Dictionary<string,object>;
 		cubeList = cubeDic["cards"] as List<object>;
-		Debug.Log("cubeList:"+cubeList.Count);
 		//get cubes from itemstorage
 		cubeArray = cardMatrix.GetComponentsInChildren<CardCube>();
-//		Debug.Log(cubeArray.Length);
 		ShowBagPage(0);
-		priviousPage.alpha=0;
-		Debug.Log("cubeSlots:"+cubeArray.Length);
+		PageButtonControl ();
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
-		
+
 	}
 
 
@@ -86,32 +85,40 @@ public class BagController : MonoBehaviour {
 	}
 	//check if paging button enable
 	public void PageButtonControl(){
-		max_pageIndex = cubeList.Count/cubeArray.Length;
-		if(pageIndex == max_pageIndex){
+		maxPageIndex = cubeList.Count/cubeArray.Length;
+		//maxPage : 0 , 1
+		if(maxPageIndex == 0){
 			priviousPage.enabled = false;
 			nextPage.enabled = false;
 		}
-		else if(pageIndex<=0 && max_pageIndex >0)
+		else if(pageIndex<1 && maxPageIndex > 0)
 		{	
 			priviousPage.enabled = false;
 			nextPage.enabled = true;
 		}
-		else if(pageIndex >= max_pageIndex && pageIndex !=0){
+		else if(pageIndex == maxPageIndex && maxPageIndex > 0 ){
 			priviousPage.enabled = true;
 			nextPage.enabled = false;
 		}
-		else if(pageIndex>0 && pageIndex <max_pageIndex){
+		else if(pageIndex > 0 && pageIndex < maxPageIndex && maxPageIndex > 0){
 			priviousPage.enabled = true;
 			nextPage.enabled = true;
 		}
 	}
 
 	public void PreviousPage(){
-		ShowBagPage(pageIndex--);
+
+		ShowBagPage(pageIndex-1);
 		PageButtonControl();
+		
 	}
 	public void NextPage(){
-		ShowBagPage(pageIndex++);
+		ShowBagPage(pageIndex+1);
 		PageButtonControl();
+		}
+	public void Escape(){
+		TweenPosition bagTween = transform.GetComponent<TweenPosition> ();
+		bagTween.PlayReverse ();
+		changePanel ();
 		}
 }

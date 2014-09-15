@@ -7,6 +7,8 @@ public class MusicController : MonoBehaviour {
 	public AudioSource mapBGM;
 	public AudioSource battleBGM;
 	public AudioSource hitEffect;
+	public AudioSource bagBGM;
+
 
 	public List<AudioClip> bgmList;
 

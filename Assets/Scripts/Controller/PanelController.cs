@@ -8,8 +8,9 @@ public class PanelController : MonoBehaviour {
 	public StageController stageCtrl;
 	public AbstractBar abBar;
 	public ParticleSystem bubble;
-	public AudioSource mapBGM;
-	public AudioSource battleBGM;
+	public UIPanel bagPanel;
+	public BagController bagCtrl;
+	public MusicController musicCtrl;
 
 
 	// Use this for initialization
@@ -19,6 +20,9 @@ public class PanelController : MonoBehaviour {
 
 		battleCtrl = GetComponent<BattleController>();
 		battleCtrl.changePanel = changeToStage;
+
+		bagCtrl = GetComponent<BagController> ();
+		bagCtrl.changePanel = changeToBag;
 	
 	}
 	
@@ -32,8 +36,11 @@ public class PanelController : MonoBehaviour {
 		stageTween.PlayForward ();
 		TweenPosition battleTween = battlePanel.GetComponent<TweenPosition>();
 		battleTween.PlayForward ();
+
 		battleCtrl.GenerateCard(5);
+		//make hp back to full
 		abBar.HPbar = 100;
+		//play particel
 		bubble.Play();
 
 
@@ -46,9 +53,22 @@ public class PanelController : MonoBehaviour {
 		battleCtrl.DestoryAllCards ();
 		abBar.HPbar =100;
 		bubble.Stop ();
-		mapBGM.Play();
-		battleBGM.Stop();
+		musicCtrl.mapBGM.Play ();
+		musicCtrl.battleBGM.Stop ();
+
 	}
 
+	public void changeToBag(){
+		TweenPosition bagTween = bagPanel.GetComponent<TweenPosition> ();
+		bagTween.PlayForward();
+		musicCtrl.mapBGM.Stop ();
+		musicCtrl.bagBGM.Play ();
+		//not sure if battle can switch to bag yet
+		if (musicCtrl.battleBGM != null) {
+			musicCtrl.battleBGM.Stop();	
+		}
+		abBar.HPbar = 100;
 
+		
+	}
 }

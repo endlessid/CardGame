@@ -13,7 +13,11 @@ public class BagController : MonoBehaviour {
 	public bool pre;
 	public bool next;
 	public int pageIndex;
-	public bool changepage;
+
+	public UISprite priviousPage;
+	public UISprite nextPage;
+
+
 
 
 	// Use this for initialization
@@ -21,29 +25,19 @@ public class BagController : MonoBehaviour {
 		//read cubeinfo from txt
 		Dictionary<string,object> cubeDic = MiniJSON.Json.Deserialize(cubeAsset.text) as Dictionary<string,object>;
 		cubeList = cubeDic["cards"] as List<object>;
+		Debug.Log("cubeList:"+cubeList.Count);
 		//get cubes from itemstorage
 		cubeArray = cardMatrix.GetComponentsInChildren<CardCube>();
 //		Debug.Log(cubeArray.Length);
-		ShowBagPage(1);
-
+		ShowBagPage(0);
+		priviousPage.alpha=0;
+		Debug.Log("cubeSlots:"+cubeArray.Length);
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(changepage){
-			ShowBagPage(pageIndex);
-			changepage=false;
-		}
-		if(pre){
-			PreviousPage ();
-			pre=false;
-		}
-		if(next){
-			NextPage ();
-			Debug.Log(max_pageIndex);
-			next=false;
-		}
+	
 		
 	}
 
@@ -90,18 +84,34 @@ public class BagController : MonoBehaviour {
 		pageCounter.text= (_pageIndex+1) + "/" + (count/pageMaxSlot+1);
 		return pageIndex;
 	}
-
+	//check if paging button enable
+	public void PageButtonControl(){
+		max_pageIndex = cubeList.Count/cubeArray.Length;
+		if(pageIndex == max_pageIndex){
+			priviousPage.enabled = false;
+			nextPage.enabled = false;
+		}
+		else if(pageIndex<=0 && max_pageIndex >0)
+		{	
+			priviousPage.enabled = false;
+			nextPage.enabled = true;
+		}
+		else if(pageIndex >= max_pageIndex && pageIndex !=0){
+			priviousPage.enabled = true;
+			nextPage.enabled = false;
+		}
+		else if(pageIndex>0 && pageIndex <max_pageIndex){
+			priviousPage.enabled = true;
+			nextPage.enabled = true;
+		}
+	}
 
 	public void PreviousPage(){
-		if(pageIndex <= 0){
-			this.collider.enabled = false;
-		}
-
+		ShowBagPage(pageIndex--);
+		PageButtonControl();
 	}
 	public void NextPage(){
-
-		max_pageIndex = cubeList.Count/cubeArray.Length+1;
-
-	}
-
+		ShowBagPage(pageIndex++);
+		PageButtonControl();
+		}
 }
